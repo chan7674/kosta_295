@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/App.css">
+    <link rel="stylesheet" href="css/Header.css">
+    <link rel="stylesheet" href="css/Editor.css">
+    <link rel="stylesheet" href="css/List.css">
+    <link rel="stylesheet" href="css/TodoItem.css">
+</head>
+
+<body>
+    <div class="App">
+        <div class="Header">
+            <h3> 오늘의 Plan 😀</h3>
+            <h1> </h1>
+        </div>
+
+        <form>
+            <div class="Editor">
+                <input type="text" placeholder="새로운 todo">
+                <button>추가</button>
+            </div>
+        </form>
+
+        <div class="List">
+            <h4> Todo List 🌱</h4>
+            <input id="keyword" type="text" placeholder="검색어를 입력해주세요.">
+
+            <div class="todos_wrapper">
+                <div class=TodoItem>
+                    <input type="checkbox">
+                    <div class="content"> React study </div>
+                    <div class="date"> 2025-03-20 </div>
+                    <button onclick=""> 삭제 </button>
+                </div>
+                <div class=TodoItem>
+                    <input type="checkbox">
+                    <div class="content"> 친구만나기 </div>
+                    <div class="date"> 2025-03-20 </div>
+                    <button> 삭제 </button>
+                </div>
+
+                <div class=TodoItem>
+                    <input type="checkbox">
+                    <div class="content"> 낮잠자기 </div>
+                    <div class="date"> 2025-03-20 </div>
+                    <button> 삭제 </button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script>
+    /*                  let mockData = [
+                          { id: 0, isDone: false, content: "React study", date: new Date().getTime() },
+                          { id: 1, isDone: true, content: "친구만나기", date: new Date().getTime() },
+                          { id: 2, isDone: false, content: "낮잠자기", date: new Date().getTime() },
+                      ];
+  
+                      let day = ["일", "월", "화", "수", "목", "금", "토"];
+  
+                      onload = () => {
+                          const now = new Date();
+                          const dateHeader = document.querySelector(".Header h1");
+                          const year = now.getFullYear();
+                          const month = now.getMonth() + 1;
+                          const date = now.getDate();
+                          const weekday = day[now.getDay()];
+                          dateHeader.innerText = `${year}-${month}-${date}    (${weekday})`;
+                          initData(mockData);
+                      };
+  
+                      const formatDate = (time) => {
+                          const date = new Date(time);
+                          const year = date.getFullYear();
+                          const month = String(date.getMonth() + 1).padStart(2, '0');
+                          const day = String(date.getDate()).padStart(2, '0');
+                          return `${year}-${month}-${day}`;
+                      };
+  
+  
+                      const initData = (printData) => {
+                          const wrapper = document.querySelector(".todos_wrapper");
+                          wrapper.innerHTML = "";
+  
+                          printData.forEach((todo) => {
+                              const todoItem = document.createElement("div");
+                              todoItem.className = "TodoItem";
+  
+                              const checkbox = document.createElement("input");
+                              checkbox.type = "checkbox";
+                              checkbox.onchange = () => onUpdate(todo.id);
+                              if (todo.isDone) checkbox.checked = true;
+  
+                              const content = document.createElement("div");
+                              content.className = "content";
+                              content.textContent = todo.content;
+  
+                              const date = document.createElement("div");
+                              date.className = "date";
+                              date.textContent = formatDate(todo.date);
+  
+                              const button = document.createElement("button");
+                              button.name = todo.id;
+                              button.textContent = "삭제";
+                              button.onclick = function () {
+                                  todoDel(this);
+                              };
+  
+                              todoItem.appendChild(checkbox);
+                              todoItem.appendChild(content);
+                              todoItem.appendChild(date);
+                              todoItem.appendChild(button);
+  
+                              wrapper.appendChild(todoItem);
+                          });
+                      };
+  
+  
+                      const onUpdate = (id) => {
+                          mockData = mockData.map((todo) =>
+                              todo.id === id ? { ...todo, isDone: !todo.isDone } : todo
+                          );
+                          initData(mockData);
+                      };
+  
+                      const todoDel = (target) => {
+                          const id = parseInt(target.name);
+                          mockData = mockData.filter((todo) => todo.id !== id);
+                          initData(mockData);
+                      };
+  
+  
+  */                  let mockData = [
+        {
+            id: 0,
+            isDone: false,
+            content: "React 공부하기",
+            date: new Date("2024-04-01").getTime(),
+        },
+        {
+            id: 1,
+            isDone: true,
+            content: "운동하기",
+            date: new Date("2024-04-02").getTime(),
+        },
+        {
+            id: 2,
+            isDone: false,
+            content: "책 읽기",
+            date: new Date("2024-04-03").getTime(),
+        }
+    ];
+
+    let idIndex = 3; // 새로 추가될 todo의 ID
+
+    // 날짜 포맷 함수
+    const formatDate = (ms) => {
+        const date = new Date(ms);
+        const dayNames = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+        const day = dayNames[date.getDay()];
+        return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} (${day})`;
+    };
+
+    // 화면 초기화 및 출력
+    const initData = (data) => {
+        const wrapper = document.querySelector(".todos_wrapper");
+        wrapper.innerHTML = ""; // 초기화
+
+        data.forEach((todo) => {
+            const item = document.createElement("div");
+            item.className = "TodoItem";
+            if (todo.isDone) item.classList.add("done");
+
+            item.innerHTML = `
+        <input type="checkbox" ${todo.isDone ? "checked" : ""} onchange="onUpdate(${todo.id})">
+        <div class="content">${todo.content}</div>
+        <div class="date">${formatDate(todo.date)}</div>
+        <button onclick="todoDel(${todo.id})">삭제</button>
+      `;
+
+            wrapper.appendChild(item);
+        });
+    };
+
+    // 추가 기능
+    document.querySelector(".Editor > button").onclick = (event) => {
+        event.preventDefault();
+
+        const input = document.querySelector(".Editor input");
+        const newContent = input.value.trim();
+        if (newContent === "") {
+            alert("할 일을 입력해주세요.");
+            return;
+        }
+
+        const newTodo = {
+            id: idIndex++,
+            isDone: false,
+            content: newContent,
+            date: new Date().getTime()
+        };
+
+        mockData.push(newTodo);
+        input.value = "";
+        initData(mockData);
+    };
+
+    // 수정 기능 (checkbox 상태 토글)
+    const onUpdate = (targetId) => {
+        mockData = mockData.map((todo) =>
+            todo.id === targetId ? { ...todo, isDone: !todo.isDone } : todo
+        );
+        initData(mockData);
+    };
+
+    // 삭제 기능
+    const todoDel = (targetId) => {
+        mockData = mockData.filter((todo) => todo.id !== targetId);
+        initData(mockData);
+    };
+
+    // 검색 기능
+    document.querySelector("#keyword").onkeyup = (e) => {
+        const searchedTodos = getFilterData(e.target.value);
+        initData(searchedTodos);
+    };
+
+    const getFilterData = (search) => {
+        if (search.trim() === "") return mockData;
+
+        return mockData.filter((todo) =>
+            todo.content.toLowerCase().includes(search.toLowerCase())
+        );
+    };
+
+    // 초기 렌더링
+    initData(mockData);
+
+
+</script>
+
+</html>
